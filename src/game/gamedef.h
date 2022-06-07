@@ -3,11 +3,6 @@
 
 #include "../common/math.h"
 
-enum class model_id_t {
-  MODEL_CUBE,
-  MODEL_PLANE
-};
-
 struct usercmd_t {
   float forward;
   float side;
@@ -16,17 +11,22 @@ struct usercmd_t {
 };
 
 struct transform_t {
-  vec3_t  position;
-  quat_t  rotation;
+  vec3_t    position;
+  quat_t    rotation;
 };
 
 struct client_t {
   usercmd_t usercmd;
 };
 
+struct sprite_t {
+  vec2_t    uv_ofs;
+};
+
 enum class component_t {
   TRANSFORM = (1 << 0),
-  CLIENT    = (1 << 1)
+  CLIENT    = (1 << 1),
+  SPRITE    = (1 << 2)
 };
 
 constexpr int operator|(component_t lhs, component_t rhs)

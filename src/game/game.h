@@ -13,6 +13,7 @@ private:
   pmove_t   m_pmove;
   
   cdict_t<client_t>     m_client;
+  cdict_t<sprite_t>     m_sprite;
   cdict_t<transform_t>  m_transform;
 
 public:
@@ -22,6 +23,8 @@ public:
   
   entity_t  get_player_entity() const { return m_player_entity; }
   
+  const edict_t               &get_edict() const { return m_edict; }
+  const cdict_t<sprite_t>     &get_sprite() const { return m_sprite; }
   const cdict_t<transform_t>  &get_transform() const { return m_transform; }
 };
 

@@ -13,7 +13,7 @@ mesh_pool_t::mesh_pool_t(int max_vertices)
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertex_t), (float*) 0);
   
   glEnableVertexAttribArray(1);
-  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(vertex_t), (float*) 3);
+  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(vertex_t), (float*) 0 + 3);
 }
 
 mesh_t mesh_pool_t::new_mesh(int num_vertices)
@@ -61,4 +61,9 @@ mesh_t mesh_pool_t::load_mesh(const vertex_t *vertices, int num_vertices)
 void mesh_pool_t::draw_mesh(const mesh_t &mesh)
 {
   glDrawArrays(GL_TRIANGLES, mesh.offset, mesh.size);
+}
+
+void mesh_pool_t::draw_sub_mesh(const mesh_t &mesh, int offset, int size)
+{
+  glDrawArrays(GL_TRIANGLES, mesh.offset + offset, size);
 }
