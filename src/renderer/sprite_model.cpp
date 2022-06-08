@@ -1,4 +1,4 @@
-#include "sprite_renderer.h"
+#include "sprite_model.h"
 
 void build_sprite_mesh(
   const quat_t      &cam_rot,
@@ -7,18 +7,6 @@ void build_sprite_mesh(
   const transform_t &transform,
   const sprite_t    &sprite)
 {
-  /*
-  static vertex_t sprite_vertices[] = {
-    vertex_t(vec3_t(-0.5f, -0.5f, 0.0f), vec2_t(0.0, 1.0)),
-    vertex_t(vec3_t(-0.5f, +0.5f, 0.0f), vec2_t(0.0, 0.0)),
-    vertex_t(vec3_t(+0.5f, -0.5f, 0.0f), vec2_t(1.0, 1.0)),
-    
-    vertex_t(vec3_t(+0.5f, -0.5f, 0.0f), vec2_t(1.0, 1.0)),
-    vertex_t(vec3_t(-0.5f, +0.5f, 0.0f), vec2_t(0.0, 0.0)),
-    vertex_t(vec3_t(+0.5f, +0.5f, 0.0f), vec2_t(1.0, 0.0)),
-  };
-  */
-  
   static vertex_t sprite_vertices[] = {
     vertex_t(vec3_t(-0.5f, -0.0f, 0.0f), vec2_t(0.0, 1.0)),
     vertex_t(vec3_t(-0.5f, +1.0f, 0.0f), vec2_t(0.0, 0.0)),
@@ -37,7 +25,7 @@ void build_sprite_mesh(
   }
 }
 
-sprite_renderer_t::sprite_renderer_t(
+sprite_model_t::sprite_model_t(
     const edict_t               &edict,
     const cdict_t<sprite_t>     &sprite,
     const cdict_t<transform_t>  &transform,
@@ -52,7 +40,7 @@ sprite_renderer_t::sprite_renderer_t(
   m_mesh = mesh_pool.new_mesh(MAX_SPRITES * 6 * sizeof(vertex_t));
 }
 
-void sprite_renderer_t::update(const quat_t &cam_rot)
+void sprite_model_t::update(const quat_t &cam_rot)
 {
   static vertex_t vertices[MAX_SPRITES * 6];
   
@@ -75,7 +63,7 @@ void sprite_renderer_t::update(const quat_t &cam_rot)
   m_mesh_pool.sub_mesh(m_mesh, 0, vertices, m_num_sprites * 6 * sizeof(vertex_t));
 }
 
-void sprite_renderer_t::draw()
+void sprite_model_t::draw()
 {
   m_mesh_pool.draw_sub_mesh(m_mesh, 0, m_num_sprites * 6);
 }

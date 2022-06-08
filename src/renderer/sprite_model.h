@@ -7,7 +7,7 @@
 
 #define MAX_SPRITES 32
 
-class sprite_renderer_t {
+class sprite_model_t {
 private:
   mesh_t      m_mesh;
   int         m_num_sprites;
@@ -20,7 +20,7 @@ private:
   const cdict_t<transform_t>  &m_transform;
   
 public:
-  sprite_renderer_t(
+  sprite_model_t(
     const edict_t               &edict,
     const cdict_t<sprite_t>     &sprite,
     const cdict_t<transform_t>  &transform,

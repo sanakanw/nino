@@ -4,8 +4,10 @@
 #include "mesh_pool.h"
 #include "shader.h"
 #include "texture.h"
-#include "sprite_renderer.h"
+#include "map_model.h"
+#include "sprite_model.h"
 #include "../game/game.h"
+#include "../game/map_file.h"
 #include "../common/math.h"
 
 class renderer_t {
@@ -19,17 +21,17 @@ private:
   mat4_t            m_projection_matrix;
   mat4_t            m_view_projection_matrix;
   
-  GLuint            m_sprite_map;
-  
-  sprite_renderer_t m_sprite_renderer;
+  map_model_t       m_map_model;
+  sprite_model_t    m_sprite_model;
 
 public:
-  void          setup_view_projection_matrix();
+  void  setup_view_projection_matrix();
 
 public:
   renderer_t(const game_t &game);
   
-  void          render();
+  void  new_map(map_file_t &map_file);
+  void  render();
 };
 
 #endif

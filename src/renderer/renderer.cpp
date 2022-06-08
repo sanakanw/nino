@@ -35,9 +35,10 @@ void main() {\
 
 renderer_t::renderer_t(const game_t &game)
   : m_game(game),
-    m_mesh_pool(4096),
+    m_mesh_pool(32000),
     m_shader(src_flat_vertex, src_flat_fragment),
-    m_sprite_renderer(game.get_edict(), game.get_sprite(), game.get_transform(), m_mesh_pool, vec2_t(1.0f / 4.0f, 1.0f / 8.0f))
+    m_map_model(m_mesh_pool),
+    m_sprite_model(game.get_edict(), game.get_sprite(), game.get_transform(), m_mesh_pool, vec2_t(1.0f / 4.0f, 1.0f / 8.0f))
 {
   glClearColor(0.01f, 0.4f, 1.0f, 1.0f);
   
@@ -48,24 +49,28 @@ renderer_t::renderer_t(const game_t &game)
   glDepthFunc(GL_LESS);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   
-  m_sprite_map = texture_load("assets/sprite_map.png");
   m_uloc_mvp = m_shader.get_uniform_location("u_mvp");
-  m_projection_matrix.init_perspective(1280.0 / 720.0, 1.0, -1.0, -100.0);
+  m_projection_matrix.init_perspective(1280.0 / 720.0, 1.0, -0.1, -100.0);
+}
+
+void renderer_t::new_map(map_file_t &map_file)
+{
+  m_map_model.load(map_file);
 }
 
 void renderer_t::render()
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   
-  m_sprite_renderer.update(m_game.get_transform()[m_game.get_player_entity()].rotation);
+  m_sprite_model.update(m_game.get_transform()[m_game.get_player_entity()].rotation);
   
   m_shader.bind();
-  glBindTexture(GL_TEXTURE_2D, m_sprite_map);
   
   setup_view_projection_matrix();
   glUniformMatrix4fv(m_uloc_mvp, 1, GL_FALSE, m_view_projection_matrix.m);
   
-  m_sprite_renderer.draw();
+  m_map_model.draw();
+  m_sprite_model.draw();
 }
 
 void renderer_t::setup_view_projection_matrix()

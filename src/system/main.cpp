@@ -1,10 +1,12 @@
 #include "input.h"
 #include "window.h"
 #include "../game/game.h"
+#include "../game/map_file.h"
 #include "../common/log.h"
 #include "../renderer/gl.h"
 #include "../renderer/renderer.h"
 #include <iostream>
+#include <fstream>
 
 void system_event_loop(event_queue_t &event_queue, input_t &input)
 {
@@ -32,6 +34,13 @@ int main(int argc, char *argv[])
   event_queue_t event_queue;
   game_t        game;
   renderer_t    renderer(game);
+  
+  std::ifstream file_nexus_map("assets/map/nexus.map", std::ifstream::binary);
+  map_file_t    map_file(file_nexus_map);
+  
+  renderer.new_map(map_file);
+  
+  file_nexus_map.close();
   
   while (!window.should_quit()) {
     window.poll(event_queue);
